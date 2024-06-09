@@ -5,7 +5,6 @@ import { searchUsers } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import Title from "../Components/Title";
 import { IUserReturnDTO } from "../models/IUserReturnDTO";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "@mui/icons-material/Logout";
 import UserList from "../Components/UserList";
@@ -13,9 +12,11 @@ import { AuthContext } from "../context/AuthContext";
 import PageHandler from "../Components/PageHandler";
 import { IUserSearchDTO } from "../models/IUserSearchDTO";
 import SearchForm from "../Components/SearchForm";
+import { ToastContext } from "../context/ToastContext";
 
 function Home() {
   const authContext = useContext(AuthContext);
+  const toastContext = useContext(ToastContext)
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [users, setUsers] = useState<IUserReturnDTO[]>([]);
@@ -36,7 +37,7 @@ function Home() {
 
   useEffect(() => {
     if (!authContext.token) {
-      toast.info("You have been logged out.");
+      toastContext.info("You have been logged out.");
       navigate('/login');
     }
   }, [authContext.token, navigate]);
@@ -58,7 +59,7 @@ function Home() {
         }
       })
       .catch((err) => {
-        toast.error(err.message);
+        toastContext.error(err.message);
         navigate("/login");
       })
       .finally(() => {
@@ -82,7 +83,6 @@ function Home() {
 
   return (
     <Page center>
-      <ToastContainer />
       <Paper elevation={3} sx={{ padding: "24px" }}>
         <div className="flex justify-between">
           <Title text={"Welcome Back " + authContext?.firstName} />

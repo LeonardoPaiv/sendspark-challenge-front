@@ -12,6 +12,6 @@ export const searchUsers = async (search: IPageSearch<IUserSearchDTO>) => {
 
 export const deleteUser = async (id: number) => {
     const url = `${baseURI}${id}`;
-  const data = await axiosInstance.delete(url);
-  return data;
+  const {data} = await axiosInstance.delete(url);
+  return data as {message: string};
 }

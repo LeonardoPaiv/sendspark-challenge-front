@@ -2,16 +2,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import { IUserReturnDTO } from "../models/IUserReturnDTO";
 import { deleteUser } from "../services/userService";
+import { useContext } from 'react';
+import { ToastContext } from '../context/ToastContext';
 
 const UserList = ({ users, update }: {users: IUserReturnDTO[], update: () => void}) => {
 
+  const toastContext = useContext(ToastContext)
+
   const handleDeleteUser = async (id: number) => {
-    try {
-      await deleteUser(id)
+      await deleteUser(id).then((res) => {
+      toastContext.success(res.message)
       update()
-    } catch (err) {
-      console.log(err)
-    }
+      }).catch(err => {
+        toastContext.error(err.message)
+      })
   };
 
   return (
