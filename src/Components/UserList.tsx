@@ -9,7 +9,8 @@ const UserList = ({ users, update }: {users: IUserReturnDTO[], update: () => voi
     try {
       await deleteUser(id)
       update()
-    } catch (err: any) {
+    } catch (err) {
+      console.log(err)
     }
   };
 
@@ -17,7 +18,7 @@ const UserList = ({ users, update }: {users: IUserReturnDTO[], update: () => voi
     <List>
       {users.map((u) => (
         <ListItem key={u.id}>
-          <ListItemText primary={`${u.firstName} ${u.lastName}`} />
+          <ListItemText primary={u.workEmail} />
           <IconButton color='error' onClick={() => handleDeleteUser(u.id)} aria-label="delete">
             <DeleteIcon />
           </IconButton>

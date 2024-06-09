@@ -18,10 +18,6 @@ const UserRegistrationForm: React.FC = () => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
-  if (!authContext) {
-    throw new Error("AuthContext não está definido");
-  }
-
   const { login } = authContext;
   const [isLoading, setIsLoading] = useState(false);
 
