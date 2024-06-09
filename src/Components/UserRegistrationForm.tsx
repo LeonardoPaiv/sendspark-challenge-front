@@ -39,8 +39,8 @@ const UserRegistrationForm: React.FC = () => {
       onSubmit={(values: IUserRegisterDTO) => {
         setIsLoading(true);
         signup(values)
-          .then((res: { access_token: string }) => {
-            login(res.access_token);
+          .then((res: { access_token: string, firstName: string }) => {
+            login(res.access_token, res.firstName);
             navigate('home');
           })
           .catch(err => {

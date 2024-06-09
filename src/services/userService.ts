@@ -1,10 +1,11 @@
-import { IUserRegisterDTO } from "../models/IUserRegisterDTO";
+import { IPageSearch } from "../models/IPageSearch";
+import { IUserSearchDTO } from "../models/IUserSearchDTO";
 import { axiosInstance } from "./axiosInstance";
 
-const baseURI = 'users/'
+const baseURI = "users/";
 
-export const signup = async (userRegisterDTO: IUserRegisterDTO) => {
-    const url = `${baseURI}register`
-    const {data} = await axiosInstance.post(url, userRegisterDTO)
-    return data
-}
+export const searchUsers = async (search: IPageSearch<IUserSearchDTO>) => {
+  const url = `${baseURI}search`;
+  const { data } = await axiosInstance.post(url, search);
+  return data;
+};
