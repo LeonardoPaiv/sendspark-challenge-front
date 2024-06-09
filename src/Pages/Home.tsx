@@ -76,6 +76,10 @@ function Home() {
     handleSearch(searchValues, prevPage);
   };
 
+  const updateList = () => {
+    handleSearch(searchValues, page)
+  }
+
   return (
     <Page center>
       <Paper elevation={3} sx={{ padding: "24px" }}>
@@ -128,7 +132,7 @@ function Home() {
             <CircularProgress />
           </Box>
         ) : (
-          <UserList users={users} />
+          <UserList users={users} update={updateList} />
         )}
         <Box display="flex" justifyContent="center" marginTop={2}>
           <Button

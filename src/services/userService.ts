@@ -9,3 +9,9 @@ export const searchUsers = async (search: IPageSearch<IUserSearchDTO>) => {
   const { data } = await axiosInstance.post(url, search);
   return data;
 };
+
+export const deleteUser = async (id: number) => {
+    const url = `${baseURI}${id}`;
+  const data = await axiosInstance.delete(url);
+  return data;
+}
