@@ -19,7 +19,7 @@ function App() {
     if (savedToken) {
       setToken(savedToken);
     } 
-  }, [navigate]);
+  }, []);
 
   const login = (newToken: string, name: string) => {
     localStorage.setItem("token", newToken);
