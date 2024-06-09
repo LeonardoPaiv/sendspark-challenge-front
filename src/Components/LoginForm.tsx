@@ -5,9 +5,10 @@ import { login } from '../services/authService';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { loginFormSchema } from '../FormSchema/loginFormSchema';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContext } from '../context/ToastContext';
 
 const LoginForm: React.FC = () => {
+  const toastContext = useContext(ToastContext)
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const goToSignup = () => {
@@ -34,13 +35,13 @@ const LoginForm: React.FC = () => {
             navigate('/home');
           })
           .catch((err) => {
-            toast.error(err.response.data.message);
+            toastContext.error(err.response.data.message);
           })
           .finally(() => setIsLoading(false));
       }}
     >
       {({ errors, touched }) => (
-        <Form noValidate autoComplete="off">
+        <Form noValidate autoComplete="off" className='w-2/3'>
           <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -98,7 +99,6 @@ const LoginForm: React.FC = () => {
               </Grid>
             </Grid>
           </Box>
-          <ToastContainer />
         </Form>
       )}
     </Formik>
