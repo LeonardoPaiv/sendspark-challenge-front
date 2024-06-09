@@ -1,30 +1,37 @@
-# React + TypeScript + Vite
+# sendspark-challenge-front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend application for the sendspark challenge. It is built using React and several modern libraries and tools to provide a robust and responsive user experience.
 
-Currently, two official plugins are available:
+## Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React**: A JavaScript library for building user interfaces.
+- **ViteJs**: A fast build tool and development server.
+- **Formik**: For building and managing forms.
+- **Yup**: For form validation.
+- **Axios**: For making HTTP requests.
+- **MUI (Material-UI)**: For UI components and styling.
+- **React-Router-Dom**: For client-side routing.
+- **React-Toastify**: For notifications.
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+To install the application, you need to have `yarn` installed on your machine. Then, follow these steps:
 
-- Configure the top-level `parserOptions` property like this:
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/LeonardoPaiv/sendspark-challenge-front.git
+    cd sendspark-challenge-front
+    ```
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+2. Install dependencies:
+    ```sh
+    yarn
+    ```
+
+## Running the Application
+
+To run the application, use the following command:
+```sh
+yarn dev
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+ The application will be available at: http://localhost:5173
