@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   TextField,
   Typography,
   Button,
   Grid,
+  CircularProgress,
 } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { signupFormSchema } from "../FormSchema/signupFormSchema";
-
+import { signup } from "../services/authService";
+import { IUserRegisterDTO } from "../models/IUserRegisterDTO";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const UserRegistrationForm: React.FC = () => {
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  if (!authContext) {
+    throw new Error("AuthContext não está definido");
+  }
+
+  const { login } = authContext;
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Formik
@@ -20,11 +33,20 @@ const UserRegistrationForm: React.FC = () => {
         company: '',
         jobTitle: '',
         workEmail: '',
-        createPassword: '',
+        password: '',
       }}
       validationSchema={signupFormSchema}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={(values: IUserRegisterDTO) => {
+        setIsLoading(true);
+        signup(values)
+          .then((res: { access_token: string }) => {
+            login(res.access_token);
+            navigate('home');
+          })
+          .catch(err => {
+            console.log(err);
+          })
+          .finally(() => setIsLoading(false));
       }}
     >
       {({ errors, touched }) => (
@@ -102,24 +124,44 @@ const UserRegistrationForm: React.FC = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="h6" component="label" htmlFor="createPassword">
+                <Typography variant="h6" component="label" htmlFor="password">
                   Create Password
                 </Typography>
                 <Field
                   as={TextField}
-                  id="createPassword"
-                  name="createPassword"
+                  id="password"
+                  name="password"
                   type="password"
                   variant="outlined"
                   fullWidth
-                  error={touched.createPassword && !!errors.createPassword}
-                  helperText={<ErrorMessage name="createPassword" />}
+                  error={touched.password && !!errors.password}
+                  helperText={<ErrorMessage name="password" />}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary" fullWidth>
-                  Continue
-                </Button>
+                <Box sx={{ position: 'relative' }}>
+                  <Button 
+                    type="submit" 
+                    variant="contained" 
+                    color="primary" 
+                    fullWidth
+                    disabled={isLoading}
+                  >
+                    Continue
+                  </Button>
+                  {isLoading && (
+                    <CircularProgress
+                      size={24}
+                      sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
+                      }}
+                    />
+                  )}
+                </Box>
               </Grid>
             </Grid>
           </Box>

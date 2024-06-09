@@ -16,7 +16,7 @@ export const signupFormSchema = Yup.object().shape({
       .email("Invalid email address")
       .matches(/^[A-Za-z0-9._%+-]+@sendspark\.com$/, "Email must belong to the domain sendspark.com")
       .required("Required"),
-    createPassword: Yup.string()
+    password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .matches(/[a-z]/, "Password must contain at least one lowercase letter")
       .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
