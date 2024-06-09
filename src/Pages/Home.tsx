@@ -1,16 +1,17 @@
 import { Paper, TextField, Button, CircularProgress, Box } from "@mui/material";
 import Page from "../Components/Page";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { searchUsers } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import Title from "../Components/Title";
 import { IUserReturnDTO } from "../models/IUserReturnDTO";
 import { Formik, Form, Field } from "formik";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { searchSchema } from "../FormSchema/searchSchema";
-import ArrowRight from '@mui/icons-material/ArrowRight';
-import ArrowLeft from '@mui/icons-material/ArrowLeft';
+import ArrowRight from "@mui/icons-material/ArrowRight";
+import ArrowLeft from "@mui/icons-material/ArrowLeft";
+import Logout from "@mui/icons-material/Logout";
 import UserList from "../Components/UserList";
 import { AuthContext } from "../context/AuthContext";
 
@@ -20,9 +21,27 @@ function Home() {
   const [page, setPage] = useState(1);
   const [users, setUsers] = useState<IUserReturnDTO[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchValues, setSearchValues] = useState({ company: '', jobTitle: '' });
+  const [searchValues, setSearchValues] = useState({
+    company: "",
+    jobTitle: "",
+  });
 
-  const handleSearch = (values: { company: string, jobTitle: string }, page: number) => {
+  const logout = () => {
+    authContext?.logout()
+    navigate('/login')
+  }
+
+  useEffect(() => {
+    if (!authContext?.token) {
+      toast.info("You have been logged out.");
+      navigate('/login');
+    }
+  }, [authContext?.token, navigate]);
+
+  const handleSearch = (
+    values: { company: string; jobTitle: string },
+    page: number
+  ) => {
     setLoading(true);
     searchUsers({
       page,
@@ -40,7 +59,7 @@ function Home() {
       })
       .catch((err) => {
         toast.error(err.message);
-        navigate('/login');
+        navigate("/login");
       })
       .finally(() => {
         setLoading(false);
@@ -50,17 +69,22 @@ function Home() {
   const increasePage = () => {
     const nextPage = page + 1;
     handleSearch(searchValues, nextPage);
-  }
+  };
 
   const decreasePage = () => {
     const prevPage = page - 1 >= 1 ? page - 1 : 1;
     handleSearch(searchValues, prevPage);
-  }
+  };
 
   return (
     <Page center>
-      <Paper elevation={3} sx={{ padding: '24px' }}>
-        <Title text={"Welcome Back " + authContext?.firstName} />
+      <Paper elevation={3} sx={{ padding: "24px" }}>
+        <div className="flex justify-between">
+          <Title text={"Welcome Back " + authContext?.firstName} />
+          <Button onClick={logout}>
+            <Logout />
+          </Button>
+        </div>
         <Formik
           initialValues={searchValues}
           validationSchema={searchSchema}
@@ -104,13 +128,24 @@ function Home() {
             <CircularProgress />
           </Box>
         ) : (
-          <UserList users={users}/>
+          <UserList users={users} />
         )}
         <Box display="flex" justifyContent="center" marginTop={2}>
-          <Button onClick={decreasePage} sx={{ marginRight: '12px' }} variant="contained" color="primary" disabled={page === 1}>
+          <Button
+            onClick={decreasePage}
+            sx={{ marginRight: "12px" }}
+            variant="contained"
+            color="primary"
+            disabled={page === 1}
+          >
             <ArrowLeft />
           </Button>
-          <Button onClick={increasePage} sx={{ marginLeft: '12px' }} variant="contained" color="primary">
+          <Button
+            onClick={increasePage}
+            sx={{ marginLeft: "12px" }}
+            variant="contained"
+            color="primary"
+          >
             <ArrowRight />
           </Button>
         </Box>
